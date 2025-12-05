@@ -9,6 +9,7 @@ export EDGAR_IDENTITY="Your Name your.email@example.com"
 export EXA_API_KEY="your-exa-key" # optional, for web search
 export ANTHROPIC_API_KEY="your-anthropic-key" # only if using an Anthropic model
 export OPENAI_API_KEY="your-openai-key"
+export HUD_API_KEY="your-hud-key" # if not already set in HUD CLI
 
 # Build the Docker image
 hud build
