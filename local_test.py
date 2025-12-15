@@ -81,35 +81,11 @@ async def test_analyze_filing_scenario():
         await agent.run(ctx, max_steps=15)
 
 
-async def test_distribution():
-    """Test multiple tasks with variants and groups for A/B testing."""
-    print("\n=== Test 4: Distribution (Variants + Groups) ===")
-
-    tasks = [
-        env(
-            "simple-query",
-            prompt="What was Tesla's total automotive revenue in FY2023?",
-            answer_includes=["82", "billion"],
-        ),
-        env(
-            "simple-query",
-            prompt="What form type is used for quarterly reports?",
-            answer_includes="10-Q",
-        ),
-    ]
-    variants = {"model": ["gpt-4o-mini", "gpt-4o"]}
-    group = 2
-
-    async with hud.eval(tasks, variants=variants, group=group) as ctx:
-        agent = OpenAIChatAgent.create(model=ctx.variants["model"])
-        await agent.run(ctx, max_steps=10)
-
-
 async def main():
     await test_tools_standalone()
-    await test_simple_query_manual()
-    await test_analyze_filing_scenario()
-    await test_distribution()
+    # Uncomment to run scenarios:
+    # await test_simple_query_manual()
+    # await test_analyze_filing_scenario()
 
 
 if __name__ == "__main__":

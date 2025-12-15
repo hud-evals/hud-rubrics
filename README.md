@@ -160,6 +160,12 @@ Or use `hud dev`:
 hud dev . --build
 ```
 
+> ⚠️ **Local runs one task at a time.** For parallel execution with multiple tasks, push and run remotely:
+> ```bash
+> hud push
+> hud eval ./remote_tasks.json --model gpt-4o --remote --group 5
+> ```
+
 ## Structure
 
 ```
