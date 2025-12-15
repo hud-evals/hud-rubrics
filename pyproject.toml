@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "SEC EDGAR rubrics environment with rubric-based evaluation"
 requires-python = ">=3.11"
 dependencies = [
-    "hud-python>=0.4.54",
+    "hud-python@git+https://github.com/hud-evals/hud-python@v5",
     "httpx>=0.24.0",
 ]
 
