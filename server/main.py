@@ -7,7 +7,7 @@ import sys
 import logging
 
 from hud.tools.types import EvaluationResult
-from hud.server import MCPServer
+from hud import Environment
 
 # Configure logging
 logging.basicConfig(
@@ -17,8 +17,8 @@ logging.basicConfig(
     force=True,  # Force all loggers to use stderr
 )
 
-# MCP server
-mcp = MCPServer(name="sec-rubrics")
+# Environment instance
+env = Environment(name="sec-rubrics")
 
 # Environment server URL (backend)
 ENV_SERVER_URL = os.getenv("ENV_SERVER_URL", "http://localhost:8000")
@@ -31,30 +31,30 @@ http_client = httpx.AsyncClient(
 )
 
 
-@mcp.initialize
+@env.initialize
 async def init():
     # Ensure environment server is reachable
     await http_client.get("/health")
 
 
-@mcp.shutdown
+@env.shutdown
 async def cleanup():
     await http_client.aclose()
 
 
-@mcp.tool()
+@env.tool()
 async def setup() -> str:
     await http_client.post("/setup")
     return "Environment setup complete"
 
 
-@mcp.tool()
+@env.tool()
 async def search_company(query: str) -> List[Dict[str, str]]:
     resp = await http_client.post("/search_company", json={"query": query})
     return resp.json()
 
 
-@mcp.tool()
+@env.tool()
 async def get_filings(
     ticker: Optional[str] = None,
     form_type: Optional[str] = None,
@@ -73,14 +73,14 @@ async def get_filings(
     return resp.json()
 
 
-@mcp.tool()
+@env.tool()
 async def get_filing_content(filing_url: str) -> str:
     resp = await http_client.post("/get_filing_content", json={"filing_url": filing_url})
     data = resp.json()
     return data.get("content", "")
 
 
-@mcp.tool()
+@env.tool()
 async def get_financial_data(ticker: str, accession_number: str) -> Any:
     """Extract financial statements and key metrics from a 10-K or 10-Q filing."""
     resp = await http_client.post(
@@ -93,7 +93,7 @@ async def get_financial_data(ticker: str, accession_number: str) -> Any:
     return resp.json()
 
 
-@mcp.tool()
+@env.tool()
 async def get_segment_data(ticker: str, accession_number: str) -> Any:
     """Extract segment-level financial data from a 10-K or 10-Q filing."""
     resp = await http_client.post(
@@ -106,26 +106,26 @@ async def get_segment_data(ticker: str, accession_number: str) -> Any:
     return resp.json()
 
 
-@mcp.tool()
+@env.tool()
 async def answer(final_answer: str) -> str:
     await http_client.post("/answer", json={"final_answer": final_answer})
     return f"Answer submitted: {final_answer}"
 
 
-@mcp.tool()
+@env.tool()
 async def evaluate(rubric: list[dict[str, str | float]]) -> EvaluationResult:
     try:
         resp = await http_client.post("/evaluate", json={"rubric": rubric})
         resp.raise_for_status()
         return EvaluationResult(**resp.json())
     except Exception as e:
-        logging.error(f"Evaluation tool error: {e}")
+        logging.error("Evaluation tool error: %s", e)
         return EvaluationResult(
             reward=0.0, done=True, content=f"Evaluation error: {e}", isError=True
         )
 
 
-@mcp.tool()
+@env.tool()
 async def get_filing_sections(ticker: str, accession_number: str) -> Any:
     resp = await http_client.post(
         "/get_filing_sections",
@@ -137,13 +137,13 @@ async def get_filing_sections(ticker: str, accession_number: str) -> Any:
     return resp.json()
 
 
-@mcp.tool()
+@env.tool()
 async def web_search(query: str) -> List[Dict[str, str]]:
     resp = await http_client.post("/web_search", json={"query": query})
     return resp.json()
 
 
-@mcp.tool()
+@env.tool()
 async def web_fetch(url: str) -> str:
     resp = await http_client.post("/web_fetch", json={"url": url})
     data = resp.json()
@@ -151,4 +151,4 @@ async def web_fetch(url: str) -> str:
 
 
 if __name__ == "__main__":
-    mcp.run()
+    env.run()

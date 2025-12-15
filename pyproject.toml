@@ -1,19 +1,19 @@
 [project]
-name = "rubrics"
+name = "sec-rubrics"
 version = "0.1.0"
-description = "Rubrics HUD environment with HTTP backend (EXA on server)"
+description = "SEC EDGAR rubrics environment with rubric-based evaluation"
 requires-python = ">=3.11"
-dependencies = [ "hud-python==0.4.42", "fastapi>=0.104.1", "uvicorn[standard]>=0.24.0", "httpx>=0.24.0",]
+dependencies = [
+    "hud-python>=0.4.54",
+    "httpx>=0.24.0",
+]
 
 [build-system]
-requires = [ "hatchling",]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hud]
-image = "rubrics:dev"
+image = "sec-rubrics:dev"
 
 [tool.hatch.metadata]
 allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = [ "server", "environment",]

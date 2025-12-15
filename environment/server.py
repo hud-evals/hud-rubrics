@@ -167,6 +167,16 @@ async def setup() -> Dict[str, Any]:
     return {"ok": True}
 
 
+@app.get("/state")
+async def get_state() -> Dict[str, Any]:
+    """Get current environment state for evaluation."""
+    return {
+        "search_count": state.search_count,
+        "fetch_count": state.fetch_count,
+        "submitted_answer": state.submitted_answer,
+    }
+
+
 @app.post("/search_company")
 async def search_company(req: SearchCompanyRequest) -> List[Dict[str, str]]:
     """Search for a company by ticker or name."""
