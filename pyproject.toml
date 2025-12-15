@@ -17,3 +17,6 @@ image = "sec-rubrics:dev"
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["server", "environment"]
