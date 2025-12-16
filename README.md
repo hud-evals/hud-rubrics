@@ -1,4 +1,4 @@
-# SEC EDGAR Rubrics Environment
+# SEC EDGAR Rubrics Environment 
 
 A HUD environment for SEC filing research with rubric-based evaluation, powered by the SEC EDGAR database and [The LLM Data Company's rubric package](https://github.com/The-LLM-Data-Company/rubric/).
 
