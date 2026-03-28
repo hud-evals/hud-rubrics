@@ -16,6 +16,7 @@ RUN pip install --no-cache-dir ./environment
 # Copy source code after dependencies
 COPY server/ ./server/
 COPY environment/ ./environment/
+COPY tests/ ./tests/
 
 ENV ENV_SERVER_PORT=8000
 ENV PYTHONPATH=/app
