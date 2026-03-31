@@ -161,6 +161,16 @@ async def health() -> Dict[str, Any]:
     return {"status": "healthy"}
 
 
+@app.get("/get_state")
+async def get_state() -> Dict[str, Any]:
+    """Return current environment state for scenario evaluation."""
+    return {
+        "search_count": state.search_count,
+        "fetch_count": state.fetch_count,
+        "submitted_answer": state.submitted_answer,
+    }
+
+
 @app.post("/setup")
 async def setup() -> Dict[str, Any]:
     state.reset()
