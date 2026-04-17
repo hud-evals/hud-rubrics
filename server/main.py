@@ -3,6 +3,7 @@
 from typing import List, Dict, Any, Optional
 import httpx
 import os
+import subprocess
 import sys
 import logging
 
@@ -75,7 +76,9 @@ async def get_filings(
 
 @mcp.tool()
 async def get_filing_content(filing_url: str) -> str:
-    resp = await http_client.post("/get_filing_content", json={"filing_url": filing_url})
+    resp = await http_client.post(
+        "/get_filing_content", json={"filing_url": filing_url}
+    )
     data = resp.json()
     return data.get("content", "")
 
@@ -148,6 +151,21 @@ async def web_fetch(url: str) -> str:
     resp = await http_client.post("/web_fetch", json={"url": url})
     data = resp.json()
     return data.get("content", "")
+
+
+@mcp.tool()
+async def hud_validate() -> str:
+    """Run the test suite to validate the environment is working correctly."""
+    result = subprocess.run(
+        [sys.executable, "-m", "pytest", "tests/", "-v", "--tb=short"],
+        capture_output=True,
+        text=True,
+        cwd="/app",
+    )
+    output = result.stdout + result.stderr
+    if result.returncode != 0:
+        raise RuntimeError(output or f"pytest exited with code {result.returncode}")
+    return output
 
 
 if __name__ == "__main__":

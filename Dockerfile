@@ -18,6 +18,7 @@ RUN pip install --no-cache-dir . ./environment
 COPY environment/ ./environment/
 COPY env.py ./
 COPY tasks.py ./
+COPY tests/ ./tests/
 
 ENV ENV_SERVER_PORT=8000
 ENV PYTHONPATH=/app
