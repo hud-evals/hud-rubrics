@@ -152,9 +152,10 @@ class SearchRequest(BaseModel):
 
 app = FastAPI(title="SEC EDGAR Environment API", version="0.1.0")
 
+EDGAR_IDENTITY = os.getenv("EDGAR_IDENTITY")
 
-if os.getenv("EDGAR_IDENTITY"):
-    set_identity(os.getenv("EDGAR_IDENTITY"))
+if EDGAR_IDENTITY:
+    set_identity(EDGAR_IDENTITY)
 
 
 @app.get("/health")

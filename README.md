@@ -6,7 +6,7 @@ An SEC filing research environment powered by the SEC EDGAR database. Agents use
 
 ```bash
 uv sync                # install dependencies
-hud deploy . --secret id=EDGAR_IDENTITY,env=EDGAR_IDENTITY           # build and deploy to HUD platform
+hud deploy . --build-arg EDGAR_IDENTITY=$EDGAR_IDENTITY           # build and deploy to HUD platform
 hud sync tasks <name>  # upload task definitions
 ```
 
@@ -20,13 +20,10 @@ hud sync tasks <name>  # upload task definitions
 
 ## Configuration
 
-**Build secrets (validated at build time):**
+**Build arg (required):**
 - `EDGAR_IDENTITY` — your SEC EDGAR identity (format: `"Name email@example.com"`)
 
-Pass with: `--secret id=EDGAR_IDENTITY,env=EDGAR_IDENTITY`
-
 **Runtime secrets:**
-- `EDGAR_IDENTITY` — also required at runtime
 - `EXA_API_KEY` — for web search/fetch tools
 - `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` — for rubric autograding
 

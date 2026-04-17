@@ -1,9 +1,8 @@
 FROM python:3.11-slim
 
-# Validate required build secrets early (fail fast)
-RUN --mount=type=secret,id=EDGAR_IDENTITY \
-    test -f /run/secrets/EDGAR_IDENTITY && test -n "$(cat /run/secrets/EDGAR_IDENTITY)" \
-    || (echo "ERROR: EDGAR_IDENTITY build secret is required (format: 'Your Name email@example.com')" && exit 1)
+# Validate required build arguments early (fail fast)
+ARG EDGAR_IDENTITY
+RUN test -n "$EDGAR_IDENTITY" || (echo "ERROR: EDGAR_IDENTITY build arg is required (format: 'Your Name email@example.com')" && exit 1)
 
 WORKDIR /app
 
@@ -23,6 +22,7 @@ COPY tests/ ./tests/
 
 ENV ENV_SERVER_PORT=8000
 ENV PYTHONPATH=/app
+ENV EDGAR_IDENTITY=$EDGAR_IDENTITY
 
 # Start environment server in background, then run MCP environment with stdio
 CMD ["sh", "-c", "uvicorn environment.server:app --host 0.0.0.0 --port 8000 --log-level warning --reload >&2 & sleep 0.5 && exec hud dev env:env --stdio"]
