@@ -37,7 +37,7 @@ See [Deploy & Go Remote](https://docs.hud.ai/building/running-at-scale) for depl
 
 **Runtime secrets:**
 - `EXA_API_KEY` — for web search/fetch tools
-- `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` — for rubric autograding
+- `OPENAI_API_KEY` — for rubric autograding
 
 ## Documentation
 
