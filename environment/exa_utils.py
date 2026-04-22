@@ -1,22 +1,6 @@
-import asyncio
-import logging
-import os
-from typing import Any, Callable, Dict
-from urllib.parse import urlparse
+from typing import Any, Dict
 
 import httpx
-from edgar import Company, Filing
-import asyncio
-import logging
-import os
-import socket
-from typing import Any, Awaitable, Callable, Dict, List, Optional, TypeVar
-
-import httpx
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-
-logger = logging.getLogger(__name__)
 
 
 async def execute_fetch(url: str, exa_api_key: str, max_length: int = 2500) -> Dict[str, Any]:
