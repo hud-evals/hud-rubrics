@@ -352,7 +352,7 @@ sncy_metrics_exact = exact_lookup.task(
         "Per Sun Country Airlines' FY2024 Form 10-K, report the exact full-year 2024 "
         "Scheduled Service metrics. Format ASMs and RPMs as numbers with comma separators "
         "(the raw thousands value from the 10-K, e.g., 1,234,567), and load factor as a "
-        "percentage with one decimal (e.g., 84.2%)."
+        "percentage with one decimal (e.g., 12.3%)."
     ),
     expected_values={
         "asms": "6,707,308",
