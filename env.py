@@ -171,6 +171,9 @@ async def rubric_research(
         )
         return
 
+    if not os.getenv("OPENAI_API_KEY"):
+        raise RuntimeError("OPENAI_API_KEY is required for rubric grading")
+
     rubric_obj = Rubric.from_dict(rubric)
     evaluation = await rubric_obj.grade(submitted)
     reward = evaluation.score / 100.0
@@ -283,6 +286,9 @@ async def multi_filing_analysis(
         )
         return
 
+    if not os.getenv("OPENAI_API_KEY"):
+        raise RuntimeError("OPENAI_API_KEY is required for rubric grading")
+
     subscores = []
     total_reward = 0.0
 
@@ -315,7 +321,13 @@ async def multi_filing_analysis(
 
 @env.initialize
 async def init() -> None:
-    """Check backend health on startup."""
+    """Validate required env vars and check backend health on startup."""
+    required = ("EDGAR_IDENTITY", "EXA_API_KEY", "OPENAI_API_KEY")
+    missing = [v for v in required if not os.getenv(v)]
+    if missing:
+        logger.warning(f"Missing environment variables: {', '.join(missing)}")
+    if len(missing) == len(required):
+        raise RuntimeError(f"No environment variables set — need at least one of: {', '.join(required)}")
     (await http_client.get("/health")).raise_for_status()
 
 
