@@ -332,9 +332,10 @@ exxon_purchases.slug = "exxon-purchases"
 
 oracle_opex_exact = exact_lookup.task(
     prompt=(
-        "Based on Oracle's FY2024 10-K, what were the operating expenses for each "
-        "segment? Report the exact dollar amounts for Cloud & License, Hardware, "
-        "and Services segments."
+        "Based on Oracle's FY2024 10-K, report the exact cost of revenues (in millions "
+        "of U.S. dollars) for each of the following line items as they appear under "
+        "'Operating expenses' on the consolidated statements of operations: Cloud "
+        "services and license support, Hardware, and Services."
     ),
     expected_values={
         "cloud_license_opex": "$9,427",
@@ -348,8 +349,9 @@ oracle_opex_exact.slug = "oracle-opex-exact"
 
 sncy_metrics_exact = exact_lookup.task(
     prompt=(
-        "Per Sun Country Airlines' FY2024 Form 10-K, report the exact ASMs, RPMs, "
-        "and load factor for 2024."
+        "Per Sun Country Airlines' FY2024 Form 10-K, report the exact full-year 2024 "
+        "Scheduled Service ASMs (in thousands), Scheduled Service RPMs (in thousands), "
+        "and Scheduled Service load factor."
     ),
     expected_values={
         "asms": "6,707,308",
@@ -369,8 +371,8 @@ boeing_segments = multi_filing_analysis.task(
     prompt=(
         "Using Boeing's Q3 2024 10-Q and FY2023 10-K, provide a comprehensive "
         "segment margin analysis. For each segment (BCA, BDS, BGS), calculate Q3 "
-        "2024 margins and FY2023 margins, then analyze the root causes of any "
-        "margin changes in the defense segment."
+        "2024 margins and FY2023 full-year margins, then analyze the root causes "
+        "of any margin changes in the defense segment."
     ),
     criteria_groups=[
         {
@@ -380,7 +382,7 @@ boeing_segments = multi_filing_analysis.task(
                 {"requirement": "States BCA Q3 2024 operating margin as -54.0% within +/- 1pp", "weight": 10},
                 {"requirement": "States BDS Q3 2024 operating margin as -43.1% within +/- 1pp", "weight": 10},
                 {"requirement": "States BGS Q3 2024 operating margin as +17.0% within +/- 1pp", "weight": 10},
-                {"requirement": "Shows margin calculation as operating income divided by revenue", "weight": 5},
+                {"requirement": "Shows margin calculation as operating income (loss) divided by revenue", "weight": 5},
                 {"requirement": "References Boeing Q3 2024 10-Q", "weight": 5},
             ],
         },
@@ -400,10 +402,10 @@ boeing_segments = multi_filing_analysis.task(
             "weight": 0.3,
             "rubric": [
                 {"requirement": "Attributes defense margin compression to fixed-price contract overruns", "weight": 12},
-                {"requirement": "Quantifies Q3 2024 defense charges as $2.0-2.4 billion", "weight": 10},
-                {"requirement": "Names at least 3 troubled programs (T-7A, KC-46A, VC-25B, Commercial Crew, MQ-25)", "weight": 8},
-                {"requirement": "States defense backlog grew from ~$59B Dec-2023 to ~$62B Sep-2024", "weight": 6},
-                {"requirement": "Identifies backlog growth with margin compression as bid discipline failure", "weight": 10},
+                {"requirement": "Quantifies Q3 2024 defense pre-tax charges as $2.0-2.6 billion", "weight": 10},
+                {"requirement": "Names at least 3 of the programs cited in Boeing's Q3 2024 BDS charges (T-7A, KC-46A, Commercial Crew, MQ-25)", "weight": 8},
+                {"requirement": "States BDS backlog grew from ~$59B Dec-2023 to ~$62B Sep-2024", "weight": 6},
+                {"requirement": "Identifies backlog growth alongside margin compression as a bid discipline failure", "weight": 10},
             ],
         },
     ],
@@ -415,7 +417,7 @@ boeing_segments.slug = "boeing-segments"
 # =============================================================================
 
 ALL_TASKS = {
-    # rubric-research (migrated from tasks.json)
+    # rubric-research
     "valero_margins": valero_margins,
     "tmobile_wireless": tmobile_wireless,
     "pnc_loans": pnc_loans,
@@ -426,9 +428,9 @@ ALL_TASKS = {
     "oracle_opex": oracle_opex,
     "sun_country": sun_country,
     "exxon_purchases": exxon_purchases,
-    # exact-lookup (new)
+    # exact-lookup
     "oracle_opex_exact": oracle_opex_exact,
     "sncy_metrics_exact": sncy_metrics_exact,
-    # multi-filing-analysis (new)
+    # multi-filing-analysis
     "boeing_segments": boeing_segments,
 }
