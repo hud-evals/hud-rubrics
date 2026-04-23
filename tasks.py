@@ -332,10 +332,10 @@ exxon_purchases.slug = "exxon-purchases"
 
 oracle_opex_exact = exact_lookup.task(
     prompt=(
-        "Based on Oracle's FY2024 10-K, report the exact cost of revenues (in millions "
-        "of U.S. dollars) for each of the following line items as they appear under "
-        "'Operating expenses' on the consolidated statements of operations: Cloud "
-        "services and license support, Hardware, and Services."
+        "Based on Oracle's FY2024 10-K, report the exact operating expenses in millions "
+        "for each segment as they appear in the consolidated statements of operations. "
+        "Format each value as a dollar amount with comma separators (e.g., $1,234) for: "
+        "Cloud services and license support, Hardware, and Services."
     ),
     expected_values={
         "cloud_license_opex": "$9,427",
@@ -350,8 +350,9 @@ oracle_opex_exact.slug = "oracle-opex-exact"
 sncy_metrics_exact = exact_lookup.task(
     prompt=(
         "Per Sun Country Airlines' FY2024 Form 10-K, report the exact full-year 2024 "
-        "Scheduled Service ASMs (in thousands), Scheduled Service RPMs (in thousands), "
-        "and Scheduled Service load factor."
+        "Scheduled Service metrics. Format ASMs and RPMs as numbers with comma separators "
+        "(the raw thousands value from the 10-K, e.g., 1,234,567), and load factor as a "
+        "percentage with one decimal (e.g., 84.2%)."
     ),
     expected_values={
         "asms": "6,707,308",
@@ -405,7 +406,7 @@ boeing_segments = multi_filing_analysis.task(
                 {"requirement": "Quantifies Q3 2024 defense pre-tax charges as $2.0-2.6 billion", "weight": 10},
                 {"requirement": "Names at least 3 of the programs cited in Boeing's Q3 2024 BDS charges (T-7A, KC-46A, Commercial Crew, MQ-25)", "weight": 8},
                 {"requirement": "States BDS backlog grew from ~$59B Dec-2023 to ~$62B Sep-2024", "weight": 6},
-                {"requirement": "Identifies backlog growth alongside margin compression as a bid discipline failure", "weight": 10},
+                {"requirement": "Discusses the relationship between backlog growth and margin compression", "weight": 10},
             ],
         },
     ],
